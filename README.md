@@ -18,21 +18,21 @@ This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multipl
 ##Config file
 
 ```yml
-# Allow which Foundation militants classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes
+# Which Foundation militant classes can be detained and converted to the other team. Leave empty for none
 detained_ntf_escapes:
-- NtfCaptain
-- NtfPrivate
-- NtfSergeant
-- NtfSpecialist
-# Allow which Insurgent militants classes are able to be detained and convert to the other team. Leave list empty to disable detained CI escapes
+#- NtfCaptain
+#- NtfPrivate
+#- NtfSergeant
+#- NtfSpecialist
+# # Which Insurgent militant classes can be detained and converted to the other team. Leave empty for none
 detained_ci_escapes:
-- ChaosConscript
-- ChaosMarauder
-- ChaosRepressor
-- ChaosRifleman
-# Set whether or not if you want a second Escape route on surface. Perhaps in Gate A
+#- ChaosConscript
+#- ChaosMarauder
+#- ChaosRepressor
+#- ChaosRifleman
+# Set whether or not if you want a second Escape route on surface. Perhaps at Gate A
 escape_door_enabled: true
-# If GateAEscape is enabled, get the position and rotation. Default location replaces the door next to the gate where the CI car spawns
+# Set the position and rotation. Default location replaces the door next to the gate where the CI car spawns
 escape_door_position:
   x: -41.25
   y: 991
