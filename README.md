@@ -17,67 +17,47 @@ This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multipl
 
 ##Config file
 
-```C#
-//Allow detained militant escapes -- Disabled by default.
-[Description("Allow which Foundation militants classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes")]
-public List<RoleTypeId> DetainedNtfEscapes { get; set; } = new()
-{
-  // RoleTypeId.NtfCaptain,
-  // RoleTypeId.NtfPrivate,
-  // RoleTypeId.NtfSergeant,
-  // RoleTypeId.NtfSpecialist
-};
-        
-[Description("Allow which Insurgent militants classes are able to be detained and convert to the other team. Leave list empty to disable detained CI escapes")]
-public List<RoleTypeId> DetainedCiEscapes { get; set; } = new()
-{
-  // RoleTypeId.ChaosConscript,
-  // RoleTypeId.ChaosMarauder,
-  // RoleTypeId.ChaosRepressor,
-  // RoleTypeId.ChaosRifleman
-};     
-
-//EscapeDoor configs
-[Description("Set whether or not if you want a second Escape route on surface. Perhaps in Gate A")]
-public bool EscapeDoorEnabled { get; set; } = true;
-
-[Description("If GateAEscape is enabled, get the position and rotation. Default location replaces the door next to the gate where the CI car spawns")]
-public Vector3 EscapeDoorPosition { get; set;  } = new (-41.25f, 991, -36.1f);
-
-public Vector3 EscapeDoorRotation { get; set; } = new (0,90,0);
-
-//---------------Escapee Reward items
-//Shared
-[Description("List the items you'll like all CI and NTF escapees to receive while escaping. Ammunition can be added but unless its not an option, you should use set ammo for the specific class. Armour is currently not supported (Trying so will spawn the player with two armour items)")]
-public List<ItemType> rewardItems { get; set; } = new()
-{
-  ItemType.Adrenaline
-};
-
-//CI Conscript
-[Description("Set how much 7.62 rounds CI Conscripts spawn with. Default is the maximum amount combat armour can carry")]
-public byte ciAmmo { get; set; } = 120;
-
-[Description("Exclusive items only for CI Conscripts. This can include sidearms and ammunition")]
-public List<ItemType> ciItems { get; set; } = new()
-{
-  ItemType.GunRevolver,
-  ItemType.Ammo44cal, //Each ItemType.Ammo44cal only gives 6 bullets. Do it twice for 12 total spare bullets
-  ItemType.Ammo44cal
-};
-
-//NTF 
-[Description("Set how much 9mm rounds NTF escapees spawn with. Default is the maximum amount combat armour can carry")]
-public byte ntf_9mmAmmo { get; set; } = 170;
-
-[Description("Set how much 5.56 ammo NTF escapees spawn with. Default is the maximum amount combat armour can carry")]
-public byte ntf_556Ammo { get; set; } = 120;
-
-[Description("Exclusive items only for NTF Escapees. This can include sidearms and ammunition")]
-public List<ItemType> ntfItems { get; set; } = new()
-{
-  ItemType.GunCOM18
-};
+```yml
+# Allow which Foundation militants classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes
+detained_ntf_escapes:
+- NtfCaptain
+- NtfPrivate
+- NtfSergeant
+- NtfSpecialist
+# Allow which Insurgent militants classes are able to be detained and convert to the other team. Leave list empty to disable detained CI escapes
+detained_ci_escapes:
+- ChaosConscript
+- ChaosMarauder
+- ChaosRepressor
+- ChaosRifleman
+# Set whether or not if you want a second Escape route on surface. Perhaps in Gate A
+escape_door_enabled: true
+# If GateAEscape is enabled, get the position and rotation. Default location replaces the door next to the gate where the CI car spawns
+escape_door_position:
+  x: -41.25
+  y: 991
+  z: -36.1
+escape_door_rotation:
+  x: 0
+  y: 90
+  z: 0
+# List the items you'll like all CI and NTF escapees to receive while escaping. Ammunition can be added but unless its not an option, you should use set ammo for the specific class. Armour is currently not supported (Trying so will spawn the player with two armour items)
+reward_items:
+- Adrenaline
+# Set how much 7.62 rounds CI Conscripts spawn with. Default is the maximum amount combat armour can carry
+ci_ammo: 120
+# Exclusive items only for CI Conscripts. This can include sidearms and ammunition
+ci_items:
+- GunRevolver
+- Ammo44cal
+- Ammo44cal
+# Set how much 9mm rounds NTF escapees spawn with. Default is the maximum amount combat armour can carry
+ntf_9mm_ammo: 170
+# Set how much 5.56 ammo NTF escapees spawn with. Default is the maximum amount combat armour can carry
+ntf_556_ammo: 120
+# Exclusive items only for NTF Escapees. This can include sidearms and ammunition
+ntf_items:
+- GunCOM18
 ```
 
 Note:
