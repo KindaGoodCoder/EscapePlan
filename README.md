@@ -17,7 +17,7 @@ This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multipl
 
 ##Config file
 
-```
+```C#
 //Allow detained militant escapes -- Disabled by default.
 [Description("Allow which Foundation militants classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes")]
 public List<RoleTypeId> DetainedNtfEscapes { get; set; } = new()
