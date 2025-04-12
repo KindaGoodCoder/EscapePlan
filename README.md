@@ -12,7 +12,7 @@ This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multipl
 
 ### How to Install?
 1. Download the appropiate `.dll` release file
-2. Find the SL Server config folder at `%APPDATA%\SCP Secret Laboratory\LabAPI\plugins` and choose the appropiate port
+2. Find the SL Server config folder at `%APPDATA%\SCP Secret Laboratory\LabAPI\plugins` and move the `.dll` file to the appropiate port. 
 3. Launch the server once to load the Configs and edit the `.yml` file in `\LabAPI\Configs\(port)` to your heart's content.
 
 ## Config file
