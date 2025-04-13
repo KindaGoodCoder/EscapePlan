@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using MapGeneration;
 using PlayerRoles;
 using UnityEngine;
 
@@ -7,7 +9,7 @@ namespace EscapePlan
 {
     public class Config
     {
-        //Allow detained militant escapes
+        //Detained militant escapes
         [Description("Allow which Foundation militants classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes")]
         public List<RoleTypeId> DetainedNtfEscapes { get; set; } = new()
         {
@@ -27,17 +29,18 @@ namespace EscapePlan
         };
         
         //EscapeDoor configs
-        [Description("Set whether or not if you want a second Escape route on surface. Perhaps in Gate A")]
-        public bool EscapeDoorEnabled { get; set; } = true;
+        [Description("Set the room the EscapeDoor will spawn. Set to RoomName.None or 0 to disable secondary escape route")]
+        public RoomName EscapeDoorRoom { get; set; } = RoomName.Outside;
 
-        [Description("If GateAEscape is enabled, get the position and rotation. Default location replaces the door next to the gate where the CI car spawns")]
-        public Vector3 EscapeDoorPosition { get; set;  } = new (-41.25f, 991, -36.1f);
+        [Description("If EscapeDoor is enabled, set the position offset in the configured Room")]
+        public Vector3 EscapeDoorPositionOffset { get; set; } = new (-41.3f, -9, -36.1f);
 
+        [Description("If EscapeDoor is enabled, set the Eular Rotation")]
         public Vector3 EscapeDoorRotation { get; set; } = new (0,90,0);
         
         //---------------Escapee Reward items
         //Shared
-        [Description("List the items you'll like all CI and NTF escapees to receive while escaping. Ammunition can be added but unless its not an option, you should use set ammo for the specific class. Armour is currently not supported (Trying so will spawn the player with two armour items)")]
+        [Description("List the items you'll like all CI and NTF escapees to receive while escaping.")]
         public List<ItemType> rewardItems { get; set; } = new()
         {
             ItemType.Adrenaline

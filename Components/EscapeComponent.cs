@@ -15,7 +15,7 @@ namespace EscapePlan.Components
             if (EscapePlan.Instance.Config.DetainedNtfEscapes.Contains(player.Role))
             {
                 player.SetRole(RoleTypeId.ChaosConscript, RoleChangeReason.Escaped, RoleSpawnFlags.AssignInventory);
-                player.Position = new Vector3(Random.Range(130, 120), 996, -44.3f); //MTF Spawn
+                player.Position = EscapePlan.SurfacePosition + new Vector3(Random.Range(130, 120), -4, -44.3f); //MTF Spawn);
                 EscapePlan.MilitantEscapes.Add(player);
             }
             else if (EscapePlan.Instance.Config.DetainedCiEscapes.Contains(player.Role))

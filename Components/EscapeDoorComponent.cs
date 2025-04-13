@@ -29,7 +29,7 @@ namespace EscapePlan.Components
             if (escapeRole == RoleTypeId.ChaosConscript) {player.SetRole(escapeRole,RoleChangeReason.Escaped); return;}
             
             player.SetRole(escapeRole, RoleChangeReason.Escaped, RoleSpawnFlags.AssignInventory);
-            player.Position = new Vector3(10, 991, Random.Range(-41, -46));
+            player.Position = EscapePlan.SurfacePosition + new Vector3(10, -9, Random.Range(-41, -46));
         }
     }
 }
