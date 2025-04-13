@@ -30,13 +30,14 @@ detained_ci_escapes:
 #- ChaosMarauder
 #- ChaosRepressor
 #- ChaosRifleman
-# Set whether or not if you want a second Escape route on surface. Perhaps at Gate A
-escape_door_enabled: true
-# Set the position and rotation. Default location replaces the door next to the gate where the CI car spawns
+# Set the room the EscapeDoor will spawn. Set to RoomName.Unnamed or 0 to disable secondary escape route
+escape_door_room: RoonName.Unnamed
+# If EscapeDoor is enabled, set the position offset in the configured Room
 escape_door_position:
   x: -41.25
-  y: 991
+  y: -9
   z: -36.1
+# If EscapeDoor is enabled, set the Eular Rotation
 escape_door_rotation:
   x: 0
   y: 90
