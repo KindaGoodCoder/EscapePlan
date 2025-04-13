@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using MapGeneration;
 using PlayerRoles;
 using UnityEngine;
@@ -29,7 +28,7 @@ namespace EscapePlan
         };
         
         //EscapeDoor configs
-        [Description("Set the room the EscapeDoor will spawn. Set to RoomName.None or 0 to disable secondary escape route")]
+        [Description("Set the room the EscapeDoor will spawn. Set to RoomName.Unnamed or 0 to disable secondary escape route")]
         public RoomName EscapeDoorRoom { get; set; } = RoomName.Outside;
 
         [Description("If EscapeDoor is enabled, set the position offset in the configured Room")]

@@ -19,7 +19,7 @@ namespace EscapePlan
     {
         public static EscapePlan Instance { get; private set; }
 
-        public static Vector3 SurfacePosition { get; } = RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == RoomName.Outside).transform.position; 
+        public static Vector3 SurfacePosition { get; private set; } 
         public static List<Player> MilitantEscapes { get; set; } = new(); //Broken PlayerChangedRoleEventArgs
         public override string Name { get; } = "Escape Plan";
         public override string Description { get; } = "Escape with a plan";
@@ -45,6 +45,7 @@ namespace EscapePlan
         
         private void OnRoundStarted()
         {
+            SurfacePosition = RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == RoomName.Outside).transform.position;
             if (Config.DetainedNtfEscapes.Any() || Config.DetainedCiEscapes.Any())
             {
                 //If detained militant escapes are allowed, spawn a primitive object at Gate B to catch non-civilian escapes
@@ -57,7 +58,7 @@ namespace EscapePlan
                 primitiveCollider.isTrigger = true;
                 primitiveCollider.gameObject.AddComponent<Components.DefaultEscapeComponent>();
             }
-
+            
             if (Config.EscapeDoorRoom == 0) return;
             
             //If the Gate A escape door is enabled, spawn it in
