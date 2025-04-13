@@ -31,7 +31,7 @@ detained_ci_escapes:
 #- ChaosRepressor
 #- ChaosRifleman
 # Set the room the EscapeDoor will spawn. Set to RoomName.Unnamed or 0 to disable secondary escape route
-escape_door_room: RoonName.Unnamed
+escape_door_room: RoonName.Outside
 # If EscapeDoor is enabled, set the position offset in the configured Room
 escape_door_position:
   x: -41.25
