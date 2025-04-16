@@ -22,8 +22,8 @@ namespace EscapePlan
         public static Vector3 SurfacePosition { get; private set; } 
         public static List<Player> MilitantEscapes { get; set; } = new(); //Broken PlayerChangedRoleEventArgs
         public override string Name { get; } = "Escape Plan";
-        public override string Description { get; } = "Escape with a plan";
-        public override string Author { get; } = "Escapist";
+        public override string Description { get; } = "Adds some extra functionality to the escaping mechanics";
+        public override string Author { get; } = "Goodman";
         public override Version Version { get; } = new Version(1, 0, 0, 0);
         public override Version RequiredApiVersion { get; } = new Version(0, 0, 0);
 
