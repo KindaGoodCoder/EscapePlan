@@ -1,7 +1,11 @@
 ﻿using LabApi.Loader.Features.Plugins;
+using LabApi.Features.Wrappers.Items;
 using System.Collections.Generic;
 using System.Linq;
 using Interactables.Interobjects.DoorUtils;
+using InventorySystem.Items;
+using InventorySystem.Items.Firearms;
+using InventorySystem.Items.Usables;
 using Mirror;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Handlers;
@@ -50,7 +54,7 @@ namespace EscapePlan
             {
                 //If detained militant escapes are allowed, spawn a primitive object at Gate B to catch non-civilian escapes
                 var primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                primitive.transform.position = RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == RoomName.Outside).transform.position + new Vector3(124, -11, 18);
+                primitive.transform.position = SurfacePosition + new Vector3(124, -11, 18);
                 primitive.transform.localScale = new Vector3(5,1,1);
                 primitive.isStatic = true;
 
@@ -65,8 +69,9 @@ namespace EscapePlan
             var toy = Object.Instantiate(
             (from gameObject in NetworkClient.prefabs.Values
                     where gameObject.name == "LCZ BreakableDoor"
-                    select gameObject.GetComponent<BreakableDoor>()).FirstOrDefault(),
-            RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == Config.EscapeDoorRoom).transform.position + Config.EscapeDoorPositionOffset, //Set world position relative to the room 
+                    select gameObject.GetComponent<BreakableDoor>()).First(), //Find the LCZ Door Prefab
+            //Set world position relative to the room
+            RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == Config.EscapeDoorRoom).transform.position + Config.EscapeDoorPositionOffset, 
             Quaternion.Euler(Config.EscapeDoorRotation)
             );
             toy.RemainingHealth = int.MaxValue;

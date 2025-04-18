@@ -9,7 +9,7 @@ namespace EscapePlan
     public class Config
     {
         //Detained militant escapes
-        [Description("Allow which Foundation militants classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes")]
+        [Description("Allow which Foundation militant classes are able to be detained and convert to the other team. Leave list empty to disable detained NTF escapes")]
         public List<RoleTypeId> DetainedNtfEscapes { get; set; } = new()
         {
             // RoleTypeId.NtfCaptain,
@@ -18,7 +18,7 @@ namespace EscapePlan
             // RoleTypeId.NtfSpecialist
         };
         
-        [Description("Allow which Insurgent militants classes are able to be detained and convert to the other team. Leave list empty to disable detained CI escapes")]
+        [Description("Allow which Insurgent militant classes are able to be detained and convert to the other team. Leave list empty to disable detained CI escapes")]
         public List<RoleTypeId> DetainedCiEscapes { get; set; } = new()
         {
             // RoleTypeId.ChaosConscript,
