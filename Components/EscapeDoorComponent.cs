@@ -10,18 +10,16 @@ namespace EscapePlan.Components
     {
         private void OnTriggerEnter(Collider collider)
         {
-            if (!Player.TryGet(collider.gameObject, out var player)) return;
+            if (!Player.TryGet(collider.gameObject, out Player player)) return;
             RoleTypeId escapeRole;
             
             switch (player.Role)
             {
-                case RoleTypeId.Scientist: escapeRole = player.IsDisarmed ? RoleTypeId.ChaosConscript : RoleTypeId.NtfSpecialist;  break;
-                case RoleTypeId.ClassD:    escapeRole = player.IsDisarmed ? RoleTypeId.NtfPrivate     : RoleTypeId.ChaosConscript; break;
-                case var _ when player.IsDisarmed:
-                    if      ( EscapePlan.Instance.Config.DetainedNtfEscapes.Contains(player.Role) ) escapeRole = RoleTypeId.ChaosConscript;
-                    else if ( EscapePlan.Instance.Config.DetainedCiEscapes.Contains( player.Role) ) escapeRole = RoleTypeId.NtfSpecialist;
-                    else return;
+                case RoleTypeId.Scientist: escapeRole = player.IsDisarmed ? RoleTypeId.ChaosConscript : RoleTypeId.NtfSpecialist; break;
+                case RoleTypeId.ClassD:    escapeRole = player.IsDisarmed ? RoleTypeId.NtfPrivate     : RoleTypeId.ChaosConscript;break;
+                case var _ when player.IsDisarmed && Config.DetainedMilitantsEscapes.Contains(player.Role):
                     EscapePlan.MilitantEscapes.Add(player); //PlayerChangedRoleArgs.OldRole is broken. This bandaid fix adds the escaped militant player to a list. The main class checks the list
+                    escapeRole = player.Team == Team.ChaosInsurgency ? Config.DetainedChaosEscapeRole : Config.DetainedFoundationEscapeRole;
                     break;
                 default: return;
             }
@@ -29,7 +27,7 @@ namespace EscapePlan.Components
             if (escapeRole == RoleTypeId.ChaosConscript) {player.SetRole(escapeRole,RoleChangeReason.Escaped); return;}
             
             player.SetRole(escapeRole, RoleChangeReason.Escaped, RoleSpawnFlags.AssignInventory);
-            player.Position = EscapePlan.SurfacePosition + new Vector3(10, -9, Random.Range(-41, -46));
+            player.Position = EscapePlan.SurfacePosition + new Vector3(15, -9, Random.Range(-41, -46));
         }
     }
 }

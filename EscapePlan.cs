@@ -1,11 +1,9 @@
-﻿using LabApi.Loader.Features.Plugins;
-using LabApi.Features.Wrappers.Items;
+﻿using System;
+using LabApi.Loader.Features.Plugins;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Interactables.Interobjects.DoorUtils;
-using InventorySystem.Items;
-using InventorySystem.Items.Firearms;
-using InventorySystem.Items.Usables;
 using Mirror;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Handlers;
@@ -14,59 +12,60 @@ using MapGeneration;
 using PlayerRoles;
 using UnityEngine;
 using Version = System.Version;
-using Log = LabApi.Features.Console.Logger;
+// using Log = LabApi.Features.Console.Logger;
 using BreakableDoor = Interactables.Interobjects.BreakableDoor;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace EscapePlan
 {
     public class EscapePlan : Plugin<Config>
     {
-        public static EscapePlan Instance { get; private set; }
-
+        public static Config ConfigFile { get; private set; }
         public static Vector3 SurfacePosition { get; private set; } 
-        public static List<Player> MilitantEscapes { get; set; } = new(); //Broken PlayerChangedRoleEventArgs
-        public override string Name { get; } = "Escape Plan";
-        public override string Description { get; } = "Adds some extra functionality to the escaping mechanics";
-        public override string Author { get; } = "Goodman";
-        public override Version Version { get; } = new Version(1, 0, 0, 0);
-        public override Version RequiredApiVersion { get; } = new Version(0, 0, 0);
+        public static List<Player> MilitantEscapes { get; } = new(); //Broken PlayerChangedRoleEventArgs bandaid
+        public static List<Player> GateBEscapes { get; }= new();
+        
+        public override string Name => "Escape Plan";
+        public override string Description => "Adds some extra functionality to the escaping mechanics";
+        public override string Author => "Goodman";
+        public override Version Version => new(1, 0, 0, 0);
+        public override Version RequiredApiVersion => new(0, 0, 0);
 
         public override void Enable()
         {
-            Instance = this;
+            ConfigFile = Config;
             PlayerEvents.ChangedRole += OnPlayerEscape;
             ServerEvents.RoundStarted += OnRoundStarted;
 
-            Log.Debug("EscapePlan Plugin Loaded");
+            LabApi.Features.Console.Logger.Debug("EscapePlan Plugin Loaded");
         }
 
         public override void Disable()
         {
-            Instance = null;
+            ConfigFile = null;
             PlayerEvents.ChangedRole -= OnPlayerEscape;
             ServerEvents.RoundStarted -= OnRoundStarted;
         }
         
-        private void OnRoundStarted()
+        private static void OnRoundStarted()
         {
             SurfacePosition = RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == RoomName.Outside).transform.position;
-            if (Config.DetainedNtfEscapes.Any() || Config.DetainedCiEscapes.Any())
-            {
-                //If detained militant escapes are allowed, spawn a primitive object at Gate B to catch non-civilian escapes
-                var primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                primitive.transform.position = SurfacePosition + new Vector3(124, -11, 18);
-                primitive.transform.localScale = new Vector3(5,1,1);
-                primitive.isStatic = true;
+            
+            //Spawn primitive at Gate B escape area to handle Gate B escapes
+            GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            primitive.transform.position = SurfacePosition + new Vector3(124, -11, 19);
+            primitive.transform.localScale = new Vector3(5,1,1);
+            primitive.isStatic = true;
 
-                var primitiveCollider = primitive.gameObject.GetComponent<BoxCollider>();
-                primitiveCollider.isTrigger = true;
-                primitiveCollider.gameObject.AddComponent<Components.DefaultEscapeComponent>();
-            }
+            BoxCollider primitiveCollider = primitive.gameObject.GetComponent<BoxCollider>();
+            primitiveCollider.isTrigger = true;
+            primitiveCollider.gameObject.AddComponent<Components.DefaultEscapeComponent>();
             
-            if (Config.EscapeDoorRoom == 0) return;
+            if (Config.EscapeDoorRoom == RoomName.Unnamed) return;
             
-            //If the Gate A escape door is enabled, spawn it in
-            var toy = Object.Instantiate(
+            //If the Gate A escape door is enabled, spawn it in to handle Gate A escapes
+            BreakableDoor toy = Object.Instantiate(
             (from gameObject in NetworkClient.prefabs.Values
                     where gameObject.name == "LCZ BreakableDoor"
                     select gameObject.GetComponent<BreakableDoor>()).First(), //Find the LCZ Door Prefab
@@ -77,26 +76,27 @@ namespace EscapePlan
             toy.RemainingHealth = int.MaxValue;
             toy.ServerChangeLock(DoorLockReason.SpecialDoorFeature, true);
             
-            var collider = toy.gameObject.AddComponent<BoxCollider>();
+            BoxCollider collider = toy.gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
             collider.gameObject.AddComponent<Components.DoorEscapeComponent>();
 
             NetworkServer.Spawn(toy.gameObject);
         }
 
-        private void OnPlayerEscape(PlayerChangedRoleEventArgs args) //Better catch-all for any escape compared to OnPlayerEscape; includes escapes done by the EscapeComponent colliders
+        private static void OnPlayerEscape(PlayerChangedRoleEventArgs args) //PlayerEscapeEvent doesn't include escapes made by the Collider Components
         {
             if (args.ChangeReason != RoleChangeReason.Escaped) return;
-
             Player player = args.Player;
 
             //--------------PlayerChangedRoleEventArgs.OldRole is currently broken---------------
             // if (args.OldRole.RoleTypeId != RoleTypeId.Scientist && args.OldRole.RoleTypeId != RoleTypeId.ClassD) return;
             
             //Only civs get reward
+            if (GateBEscapes.Contains(player)) {GateBEscapes.Remove(player); player.Position = SurfacePosition + new Vector3(Random.Range(130, 120), -4, -44.3f);}
+            
             if (MilitantEscapes.Contains(player)) {MilitantEscapes.Remove(player); return;} //Broken PlayerChangedRoleEventArgs; Check the militant escape list to see if the player should get rewards for escaping
             
-            void GiveItemsFromList(List<ItemType> itemList) { foreach (ItemType item in itemList) {player.AddItem(item);} } //Define function to only be used with this specific player
+            void GiveItemsFromList(List<ItemType> itemList) {foreach (ItemType item in itemList) {player.AddItem(item);}} //Define function to only be used with this specific player
             
             //-----Give extra items and ammunition to escapees
             
