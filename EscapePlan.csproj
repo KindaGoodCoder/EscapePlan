@@ -34,9 +34,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Config.cs" />
-        <Compile Include="EscapeComponent.cs" />
-        <Compile Include="EscapePlan.cs" />
+        <Compile Include="EscapePlan\Config.cs" />
+        <Compile Include="EscapePlan\EscapeComponent.cs" />
+        <Compile Include="EscapePlan\EscapePlan.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
