@@ -17,10 +17,10 @@ namespace EscapePlan
             public RoomName EscapeRoom = RoomName.Outside;
 
             [Description("Set the Door's position offset from the Spawn Room")]
-            public readonly Vector3 PositionOffset = new(-41.3f, -9, -36.1f);
-            public readonly Vector3 Rotation = new(0, 90, 0);
+            public Vector3 PositionOffset = new(-41.3f, -9, -36.1f);
+            public Vector3 Rotation = new(0, 90, 0);
             [Description("Set where escapees will spawn after using the door")]
-            public readonly Vector3 SpawnLocation = new(20, -9, -46);
+            public Vector3 SpawnLocation = new(20, -9, -46);
         }
         
         [Description("Set whether escaping at a specific gate will spawn you in at that location, or simply use the default escape spawn")]
