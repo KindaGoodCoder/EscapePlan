@@ -11,7 +11,7 @@ namespace EscapePlan
     {
         //EscapeDoor configs
         [Description("Data for the Escape Door. Set Room, position offset from the room, rotation and where the door will spawn escapees. Set to null to disable")]
-        [CanBeNull]
+        // [CanBeNull]
         public static EscapeDoorData EscapeDoor => new();
         public class EscapeDoorData
         {
