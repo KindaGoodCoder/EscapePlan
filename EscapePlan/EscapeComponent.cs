@@ -1,6 +1,7 @@
 ﻿using LabApi.Features.Wrappers;
 using PlayerRoles;
 using UnityEngine;
+
 // using Log = LabApi.Features.Console.Logger;
 
 namespace EscapePlan
@@ -19,7 +20,7 @@ namespace EscapePlan
             {
                 case RoleTypeId.Scientist: escapeRole = player.IsDisarmed ? RoleTypeId.ChaosConscript : RoleTypeId.NtfSpecialist; break;
                 case RoleTypeId.ClassD:    escapeRole = player.IsDisarmed ? RoleTypeId.NtfPrivate     : RoleTypeId.ChaosConscript;break;
-                case var _ when player.IsDisarmed && Config.DetainedMilitantsEscapes.Contains(player.Role):
+                case var _ when player.IsDisarmed && Config.DetainedMilitantsEscapees.Contains(player.Role):
                     EscapePlan.MilitantEscapes.Add(player); //PlayerChangedRoleArgs.OldRole is broken. This bandaid fix adds the escaped militant player to a list for the main class checks the list
                     escapeRole = player.Team == Team.ChaosInsurgency ? Config.DetainedChaosEscapeRole : Config.DetainedFoundationEscapeRole;
                     break;

@@ -29,7 +29,7 @@ namespace EscapePlan
         
         //Detained militant escapes
         [Description("Allow which militant classes are able to be detained and convert to the other team. Leave list empty to disable detained militant escapes")]
-        public static List<RoleTypeId> DetainedMilitantsEscapes => new()
+        public static List<RoleTypeId> DetainedMilitantsEscapees => new()
         {
             // RoleTypeId.NtfCaptain,
             // RoleTypeId.NtfPrivate,
