@@ -62,4 +62,4 @@ ntf_items:
 
 Note:
 The current code was tested to work for 14.0.3 but since in 14.1, surface has been moved from y=1000 to y=300, there may be some errors. However, the program should be able to automatically account for this.
-However, since there is currently no avaliable 14.1 server tool, it is currently not possible to test it.
+But since there is currently no avaliable 14.1 server tool, it is currently not possible to test it.
