@@ -20,15 +20,15 @@ namespace EscapePlan
             {
                 case RoleTypeId.Scientist: escapeRole = player.IsDisarmed ? RoleTypeId.ChaosConscript : RoleTypeId.NtfSpecialist; break;
                 case RoleTypeId.ClassD:    escapeRole = player.IsDisarmed ? RoleTypeId.NtfPrivate     : RoleTypeId.ChaosConscript;break;
-                case var _ when player.IsDisarmed && Config.DetainedMilitantsEscapees.Contains(player.Role):
+                case var _ when player.IsDisarmed && EscapePlan.config.DetainedMilitantsEscapees.Contains(player.Role):
                     EscapePlan.MilitantEscapes.Add(player); //PlayerChangedRoleArgs.OldRole is broken. This bandaid fix adds the escaped militant player to a list for the main class checks the list
-                    escapeRole = player.Team == Team.ChaosInsurgency ? Config.DetainedChaosEscapeRole : Config.DetainedFoundationEscapeRole;
+                    escapeRole = player.Team == Team.ChaosInsurgency ? EscapePlan.config.DetainedChaosEscapeRole : EscapePlan.config.DetainedFoundationEscapeRole;
                     break;
                 default: return;
             }
 
             player.SetRole(escapeRole, RoleChangeReason.Escaped);
-            if (Config.EscapeesSpawnAtEscapeGate) player.Position = spawnPosition + EscapePlan.SurfacePosition + new Vector3(0, 0, Random.Range(0,5));
+            if (EscapePlan.config.EscapeesSpawnAtEscapeGate) player.Position = spawnPosition + EscapePlan.SurfacePosition + new Vector3(0, 0, Random.Range(0,5));
         }
     }
 }

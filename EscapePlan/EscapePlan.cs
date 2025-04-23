@@ -20,6 +20,7 @@ namespace EscapePlan
 {
     public class EscapePlan : Plugin<Config>
     {
+        public static Config config {get; private set;}
         public static Vector3 SurfacePosition { get; private set; } 
         public static List<Player> MilitantEscapes { get; } = new(); //Broken PlayerChangedRoleEventArgs bandaid
         
@@ -31,6 +32,7 @@ namespace EscapePlan
 
         public override void Enable()
         {
+            config = Config;
             PlayerEvents.ChangedRole += OnPlayerEscape;
             ServerEvents.RoundStarted += OnRoundStarted;
 
@@ -44,7 +46,7 @@ namespace EscapePlan
             ServerEvents.RoundStarted -= OnRoundStarted;
         }
         
-        private static void OnRoundStarted()
+        private void OnRoundStarted()
         {
             SurfacePosition = RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == RoomName.Outside).transform.position;
             
@@ -70,7 +72,7 @@ namespace EscapePlan
                     where gameObject.name == "LCZ BreakableDoor"
                     select gameObject.GetComponent<BreakableDoor>()).First(), //Find the LCZ Door Prefab
                 //Set world position relative to the room
-                RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == escapeDoor.EscapeRoom).transform.position + escapeDoor.PositionOffset,
+                RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == Config.EscapeDoorData.EscapeRoom).transform.position + escapeDoor.PositionOffset,
                 Quaternion.Euler(escapeDoor.Rotation)
             );
             toy.RemainingHealth = int.MaxValue;
@@ -82,7 +84,7 @@ namespace EscapePlan
             NetworkServer.Spawn(toy.gameObject);
         }
 
-        private static void OnPlayerEscape(PlayerChangedRoleEventArgs args) //PlayerEscapeEvent doesn't include escapes made by the Collider Components
+        private void OnPlayerEscape(PlayerChangedRoleEventArgs args) //PlayerEscapeEvent doesn't include escapes made by the Collider Components
         {
             if (args.ChangeReason != RoleChangeReason.Escaped) return;
             Player player = args.Player;
