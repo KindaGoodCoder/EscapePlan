@@ -3,8 +3,9 @@
 
 Plugin that adds on to the current escape system and introduces some new features such as:
 - Gives civilian escapees additional items as a reward for escaping (Can be configured)
-- Adds a new escape route with a configurable location; Maybe try putting it at Gate A
+- Adds a new escape route with a configurable location where you can choose where it spawns; Maybe try putting it at Gate A
 - Allows certain detained militant roles to be captured and defect to the enemy team (Disabled by default)
+- Detained militants and escapees will spawn at the Gate they escaped from. For example a Class-D that escapes from Gate B and becomes a Chaos Conscript will spawn at Gate B instead of A. This is on by default and can be disabled
 
 Features are almost completely configurable so customise it for whatever your server needs.
 
