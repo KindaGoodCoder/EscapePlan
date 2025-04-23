@@ -61,6 +61,5 @@ ntf_items:
 ```
 
 Note:
-The current code is intended to work for 14.0.3 and will not work as intended in 14.1 as that update has moved the Surface zone from y=1000 to y=300.
-
-A EscapePlan-14.1.dll release has been made but could not be tested as there is there is no dedicated server tool avaliable for it. However that version of the code simply subtracts 700 from the y-axis from all Vector3 position uses.
+The current code was tested to work for 14.0.3 but since in 14.1, surface has been moved from y=1000 to y=300, there may be some errors. However, the program should be able to automatically account for this.
+However, since there is currently no avaliable 14.1 server tool, it is currently not possible to test it.
