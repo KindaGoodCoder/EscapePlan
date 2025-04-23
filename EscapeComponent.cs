@@ -3,11 +3,13 @@ using PlayerRoles;
 using UnityEngine;
 // using Log = LabApi.Features.Console.Logger;
 
-namespace EscapePlan.Components
+namespace EscapePlan
 {
-    public class DoorEscapeComponent : MonoBehaviour
+    public class EscapeComponent : MonoBehaviour
     //Escape handler for the Gate A Escape Door
     {
+        public Vector3 spawnPosition;
+    
         private void OnTriggerEnter(Collider collider)
         {
             if (!Player.TryGet(collider.gameObject, out Player player)) return;
@@ -18,16 +20,14 @@ namespace EscapePlan.Components
                 case RoleTypeId.Scientist: escapeRole = player.IsDisarmed ? RoleTypeId.ChaosConscript : RoleTypeId.NtfSpecialist; break;
                 case RoleTypeId.ClassD:    escapeRole = player.IsDisarmed ? RoleTypeId.NtfPrivate     : RoleTypeId.ChaosConscript;break;
                 case var _ when player.IsDisarmed && Config.DetainedMilitantsEscapes.Contains(player.Role):
-                    EscapePlan.MilitantEscapes.Add(player); //PlayerChangedRoleArgs.OldRole is broken. This bandaid fix adds the escaped militant player to a list. The main class checks the list
+                    EscapePlan.MilitantEscapes.Add(player); //PlayerChangedRoleArgs.OldRole is broken. This bandaid fix adds the escaped militant player to a list for the main class checks the list
                     escapeRole = player.Team == Team.ChaosInsurgency ? Config.DetainedChaosEscapeRole : Config.DetainedFoundationEscapeRole;
                     break;
                 default: return;
             }
-            
-            if (escapeRole == RoleTypeId.ChaosConscript) {player.SetRole(escapeRole,RoleChangeReason.Escaped); return;}
-            
-            player.SetRole(escapeRole, RoleChangeReason.Escaped, RoleSpawnFlags.AssignInventory);
-            player.Position = EscapePlan.SurfacePosition + new Vector3(15, -9, Random.Range(-41, -46));
+
+            player.SetRole(escapeRole, RoleChangeReason.Escaped);
+            if (Config.EscapeesSpawnAtEscapeGate) player.Position = spawnPosition + EscapePlan.SurfacePosition + new Vector3(0, 0, Random.Range(0,5));
         }
     }
 }

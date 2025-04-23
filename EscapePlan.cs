@@ -1,7 +1,6 @@
 ﻿using System;
 using LabApi.Loader.Features.Plugins;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
@@ -15,26 +14,22 @@ using Version = System.Version;
 // using Log = LabApi.Features.Console.Logger;
 using BreakableDoor = Interactables.Interobjects.BreakableDoor;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace EscapePlan
 {
     public class EscapePlan : Plugin<Config>
     {
-        public static Config ConfigFile { get; private set; }
         public static Vector3 SurfacePosition { get; private set; } 
         public static List<Player> MilitantEscapes { get; } = new(); //Broken PlayerChangedRoleEventArgs bandaid
-        public static List<Player> GateBEscapes { get; }= new();
         
         public override string Name => "Escape Plan";
-        public override string Description => "Adds some extra functionality to the escaping mechanics";
+        public override string Description => "Adds extra functionality to the escaping mechanics";
         public override string Author => "Goodman";
         public override Version Version => new(1, 0, 0, 0);
         public override Version RequiredApiVersion => new(0, 0, 0);
 
         public override void Enable()
         {
-            ConfigFile = Config;
             PlayerEvents.ChangedRole += OnPlayerEscape;
             ServerEvents.RoundStarted += OnRoundStarted;
 
@@ -43,7 +38,7 @@ namespace EscapePlan
 
         public override void Disable()
         {
-            ConfigFile = null;
+            MilitantEscapes.Clear();
             PlayerEvents.ChangedRole -= OnPlayerEscape;
             ServerEvents.RoundStarted -= OnRoundStarted;
         }
@@ -52,34 +47,38 @@ namespace EscapePlan
         {
             SurfacePosition = RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == RoomName.Outside).transform.position;
             
-            //Spawn primitive at Gate B escape area to handle Gate B escapes
-            GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            primitive.transform.position = SurfacePosition + new Vector3(124, -11, 19);
-            primitive.transform.localScale = new Vector3(5,1,1);
-            primitive.isStatic = true;
+            //If Escapees spawn at the gate they escape at or detained militants are allowed to escape, spawn a primitive at Gate B escape area to handle Gate B escapes
+            if (Config.DetainedMilitantsEscapes.Any() || Config.EscapeesSpawnAtEscapeGate)
+            {
+                GameObject primitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                primitive.transform.position = SurfacePosition + new Vector3(124, -10, 20);
+                primitive.transform.localScale = new Vector3(5,1,1);
+                primitive.isStatic = true;
 
-            BoxCollider primitiveCollider = primitive.gameObject.GetComponent<BoxCollider>();
-            primitiveCollider.isTrigger = true;
-            primitiveCollider.gameObject.AddComponent<Components.DefaultEscapeComponent>();
-            
-            if (Config.EscapeDoorRoom == RoomName.Unnamed) return;
+                BoxCollider primitiveCollider = primitive.gameObject.GetComponent<BoxCollider>();
+                primitiveCollider.isTrigger = true;
+                primitiveCollider.gameObject.AddComponent<EscapeComponent>().spawnPosition = new Vector3(120, -4, -44.3f);
+            }
             
             //If the Gate A escape door is enabled, spawn it in to handle Gate A escapes
+            if (Config.EscapeDoor == null) return;
+            
+            var escapeDoor = Config.EscapeDoor;
+
             BreakableDoor toy = Object.Instantiate(
-            (from gameObject in NetworkClient.prefabs.Values
+                (from gameObject in NetworkClient.prefabs.Values
                     where gameObject.name == "LCZ BreakableDoor"
                     select gameObject.GetComponent<BreakableDoor>()).First(), //Find the LCZ Door Prefab
-            //Set world position relative to the room
-            RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == Config.EscapeDoorRoom).transform.position + Config.EscapeDoorPositionOffset, 
-            Quaternion.Euler(Config.EscapeDoorRotation)
+                //Set world position relative to the room
+                RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == escapeDoor.EscapeRoom).transform.position + escapeDoor.PositionOffset,
+                Quaternion.Euler(escapeDoor.Rotation)
             );
             toy.RemainingHealth = int.MaxValue;
             toy.ServerChangeLock(DoorLockReason.SpecialDoorFeature, true);
-            
+
             BoxCollider collider = toy.gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
-            collider.gameObject.AddComponent<Components.DoorEscapeComponent>();
-
+            collider.gameObject.AddComponent<EscapeComponent>().spawnPosition = escapeDoor.SpawnLocation;
             NetworkServer.Spawn(toy.gameObject);
         }
 
@@ -91,15 +90,11 @@ namespace EscapePlan
             //--------------PlayerChangedRoleEventArgs.OldRole is currently broken---------------
             // if (args.OldRole.RoleTypeId != RoleTypeId.Scientist && args.OldRole.RoleTypeId != RoleTypeId.ClassD) return;
             
-            //Only civs get reward
-            if (GateBEscapes.Contains(player)) {GateBEscapes.Remove(player); player.Position = SurfacePosition + new Vector3(Random.Range(130, 120), -4, -44.3f);}
-            
             if (MilitantEscapes.Contains(player)) {MilitantEscapes.Remove(player); return;} //Broken PlayerChangedRoleEventArgs; Check the militant escape list to see if the player should get rewards for escaping
             
             void GiveItemsFromList(List<ItemType> itemList) {foreach (ItemType item in itemList) {player.AddItem(item);}} //Define function to only be used with this specific player
             
             //-----Give extra items and ammunition to escapees
-            
             GiveItemsFromList(Config.rewardItems);
 
             if (args.NewRole == RoleTypeId.ChaosConscript) {

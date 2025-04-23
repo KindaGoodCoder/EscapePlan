@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using JetBrains.Annotations;
 using MapGeneration;
 using PlayerRoles;
 using UnityEngine;
@@ -8,18 +9,36 @@ namespace EscapePlan
 {
     public class Config
     {
+        //EscapeDoor configs
+        [Description("Data for the Escape Door. Set Room, position offset from the room, rotation and where the door will spawn escapees. Set to null to disable")]
+        [CanBeNull]
+        public static EscapeDoorData EscapeDoor => new();
+        public class EscapeDoorData
+        {
+            [Description("Set which room the EscapeDoor will spawn in")]
+            public readonly RoomName EscapeRoom = RoomName.Outside;
+            [Description("Set the Door's position offset from the Spawn Room")]
+            public readonly Vector3 PositionOffset = new(-41.3f, -9, -36.1f);
+            public readonly Vector3 Rotation = new(0, 90, 0);
+            [Description("Set where escapees will spawn after using the door")]
+            public readonly Vector3 SpawnLocation = new(20, -9, -46);
+        }
+        
+        [Description("Set whether escaping at a specific gate will spawn you in at that location, or simply use the default escape spawn")]
+        public static bool EscapeesSpawnAtEscapeGate => true;
+        
         //Detained militant escapes
         [Description("Allow which militant classes are able to be detained and convert to the other team. Leave list empty to disable detained militant escapes")]
         public static List<RoleTypeId> DetainedMilitantsEscapes => new()
         {
-            RoleTypeId.NtfCaptain,
-            RoleTypeId.NtfPrivate,
-            RoleTypeId.NtfSergeant,
-            RoleTypeId.NtfSpecialist,
-            RoleTypeId.ChaosConscript,
-            RoleTypeId.ChaosMarauder,
-            RoleTypeId.ChaosRepressor,
-            RoleTypeId.ChaosRifleman
+            // RoleTypeId.NtfCaptain,
+            // RoleTypeId.NtfPrivate,
+            // RoleTypeId.NtfSergeant,
+            // RoleTypeId.NtfSpecialist,
+            // RoleTypeId.ChaosConscript,
+            // RoleTypeId.ChaosMarauder,
+            // RoleTypeId.ChaosRepressor,
+            // RoleTypeId.ChaosRifleman
         };
         
         [Description("Set which class will spawn if a Chaos Insurgent is detained and escapes")]
@@ -28,25 +47,15 @@ namespace EscapePlan
         [Description("Set which class will spawn if a Foundation militant is detained and escapes")]
         public static RoleTypeId DetainedFoundationEscapeRole => RoleTypeId.ChaosConscript;
         
-        //EscapeDoor configs
-        [Description("Set the room the EscapeDoor will spawn. Set to RoomName.Unnamed or 0 to disable secondary escape route")]
-        public static RoomName EscapeDoorRoom => RoomName.Outside;
-
-        [Description("If EscapeDoor is enabled, set the position offset in the configured Room")]
-        public static Vector3 EscapeDoorPositionOffset => new (-41.3f, -9, -36.1f);
-
-        [Description("If EscapeDoor is enabled, set the Eular Rotation")]
-        public static Vector3 EscapeDoorRotation => new (0,90,0);
-        
-        //---------------Escapee Reward items
-        //Shared
+        //Escapee Reward items//
+            //Shared
         [Description("List the items you'll like all CI and NTF escapees to receive while escaping.")]
-        public static List<ItemType> rewardItems => new()
+        public static List<ItemType> rewardItems => new() 
         {
             ItemType.Adrenaline
         };
 
-        //CI Conscript
+            //CI Conscript
         [Description("Set how much 7.62 rounds CI Conscripts spawn with. Default is the maximum amount combat armour can carry")]
         public static byte ciAmmo => 120;
 
@@ -58,7 +67,7 @@ namespace EscapePlan
             ItemType.Ammo44cal
         };
 
-        //NTF 
+            //NTF 
         [Description("Set how much 9mm rounds NTF escapees spawn with. Default is the maximum amount combat armour can carry")]
         public static byte ntf_9mmAmmo => 170;
 
