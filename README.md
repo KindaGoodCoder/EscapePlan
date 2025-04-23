@@ -18,18 +18,17 @@ This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multipl
 ## Config file
 
 ```yml
-# Which Foundation militant classes can be detained and converted to the other team. Leave empty for none
-detained_ntf_escapes:
-#- NtfCaptain
-#- NtfPrivate
-#- NtfSergeant
-#- NtfSpecialist
-# # Which Insurgent militant classes can be detained and converted to the other team. Leave empty for none
-detained_ci_escapes:
-#- ChaosConscript
-#- ChaosMarauder
-#- ChaosRepressor
-#- ChaosRifleman
+# Which militant classes can be detained and converted to the other team. Leave empty for none (Disabled by default)
+detained_militant_escapes:
+- NtfCaptain
+- NtfPrivate
+- NtfSergeant
+- NtfSpecialist
+- ChaosConscript
+- ChaosMarauder
+- ChaosRepressor
+- ChaosRifleman
+
 # Set the room the EscapeDoor will spawn. Set to RoomName.Unnamed or 0 to disable secondary escape route
 escape_door_room: RoonName.Outside
 # If EscapeDoor is enabled, set the position offset in the configured Room
