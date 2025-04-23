@@ -72,7 +72,7 @@ namespace EscapePlan
                     where gameObject.name == "LCZ BreakableDoor"
                     select gameObject.GetComponent<BreakableDoor>()).First(), //Find the LCZ Door Prefab
                 //Set world position relative to the room
-                RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == Config.EscapeDoorData.EscapeRoom).transform.position + escapeDoor.PositionOffset,
+                RoomIdentifier.AllRoomIdentifiers.First(x => x.Name == Config.EscapeDoor.EscapeRoom).transform.position + escapeDoor.PositionOffset,
                 Quaternion.Euler(escapeDoor.Rotation)
             );
             toy.RemainingHealth = int.MaxValue;

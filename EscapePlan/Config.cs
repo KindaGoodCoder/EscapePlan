@@ -14,7 +14,7 @@ namespace EscapePlan
         public class EscapeDoorData
         {
             [Description("Set which room the EscapeDoor will spawn in")]
-            public const RoomName EscapeRoom = RoomName.Outside;
+            public RoomName EscapeRoom = RoomName.Outside;
 
             [Description("Set the Door's position offset from the Spawn Room")]
             public readonly Vector3 PositionOffset = new(-41.3f, -9, -36.1f);
