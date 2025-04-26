@@ -1,7 +1,6 @@
 ﻿using System;
 using LabApi.Loader.Features.Plugins;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
@@ -21,8 +20,7 @@ namespace EscapePlan
     public class EscapePlan : Plugin<Config>
     {
         public static Config config {get; private set;}
-        public static Vector3 SurfacePosition { get; private set; } 
-        public static List<Player> MilitantEscapes { get; } = new(); //Broken PlayerChangedRoleEventArgs bandaid
+        public static Vector3 SurfacePosition { get; private set; }
         
         public override string Name => "Escape Plan";
         public override string Description => "Adds extra functionality to the escaping mechanics";
@@ -33,7 +31,7 @@ namespace EscapePlan
         public override void Enable()
         {
             config = Config;
-            PlayerEvents.ChangedRole += OnPlayerEscape;
+            PlayerEvents.Escaped += OnPlayerEscape;
             ServerEvents.RoundStarted += OnRoundStarted;
 
             LabApi.Features.Console.Logger.Debug("EscapePlan Plugin Loaded");
@@ -41,8 +39,7 @@ namespace EscapePlan
 
         public override void Disable()
         {
-            MilitantEscapes.Clear();
-            PlayerEvents.ChangedRole -= OnPlayerEscape;
+            PlayerEvents.Escaped -= OnPlayerEscape;
             ServerEvents.RoundStarted -= OnRoundStarted;
         }
         
@@ -84,17 +81,13 @@ namespace EscapePlan
             NetworkServer.Spawn(toy.gameObject);
         }
 
-        private void OnPlayerEscape(PlayerChangedRoleEventArgs args) //PlayerEscapeEvent doesn't include escapes made by the Collider Components
+        private void OnPlayerEscape(PlayerEscapedEventArgs args)
         {
-            if (args.ChangeReason != RoleChangeReason.Escaped) return;
             Player player = args.Player;
-
-            //--------------PlayerChangedRoleEventArgs.OldRole is currently broken---------------
-            // if (args.OldRole.RoleTypeId != RoleTypeId.Scientist && args.OldRole.RoleTypeId != RoleTypeId.ClassD) return;
             
-            if (MilitantEscapes.Contains(player)) {MilitantEscapes.Remove(player); return;} //Broken PlayerChangedRoleEventArgs; Check the militant escape list to see if the player should get rewards for escaping
+            if (args.EscapeScenarioType == Escape.EscapeScenarioType.Custom) return;
             
-            void GiveItemsFromList(List<ItemType> itemList) {foreach (ItemType item in itemList) {player.AddItem(item);}} //Define function to only be used with this specific player
+            void GiveItemsFromList(ItemType[] itemList) {foreach (ItemType item in itemList) {player.AddItem(item);}} //Define function to only be used with this specific player
             
             //-----Give extra items and ammunition to escapees
             GiveItemsFromList(Config.rewardItems);

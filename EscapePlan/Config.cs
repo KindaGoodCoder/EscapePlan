@@ -3,6 +3,7 @@ using System.ComponentModel;
 using MapGeneration;
 using PlayerRoles;
 using UnityEngine;
+// ReSharper disable MemberCanBeMadeStatic.Global
 
 namespace EscapePlan
 {
@@ -28,7 +29,7 @@ namespace EscapePlan
         
         //Detained militant escapes
         [Description("Allow which militant classes are able to be detained and convert to the other team. Leave list empty to disable detained militant escapes")]
-        public List<RoleTypeId> DetainedMilitantsEscapees => new()
+        public RoleTypeId[] DetainedMilitantsEscapees => new RoleTypeId[]
         {
             // RoleTypeId.NtfCaptain,
             // RoleTypeId.NtfPrivate,
@@ -49,7 +50,7 @@ namespace EscapePlan
         //Escapee Reward items//
             //Shared
         [Description("List the items you'll like all CI and NTF escapees to receive while escaping.")]
-        public List<ItemType> rewardItems => new() 
+        public ItemType[] rewardItems => new[] 
         {
             ItemType.Adrenaline
         };
@@ -59,7 +60,7 @@ namespace EscapePlan
         public byte ciAmmo => 120;
 
         [Description("Exclusive items only for CI Conscripts. This can include sidearms and ammunition")]
-        public List<ItemType> ciItems => new()
+        public ItemType[] ciItems => new[]
         {
             ItemType.GunRevolver,
             ItemType.Ammo44cal, //Each ItemType.Ammo44cal only gives 6 bullets. Do it twice for 12 total spare bullets
@@ -74,7 +75,7 @@ namespace EscapePlan
         public byte ntf_556Ammo => 120;
         
         [Description("Exclusive items only for NTF Escapees. This can include sidearms and ammunition")]
-        public List<ItemType> ntfItems => new()
+        public ItemType[] ntfItems => new[]
         {
             ItemType.GunCOM18
         };
