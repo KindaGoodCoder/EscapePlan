@@ -40,6 +40,9 @@
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
+      <Reference Include="0Harmony, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+        <HintPath>packages\Lib.Harmony.2.4.1\lib\net48\0Harmony.dll</HintPath>
+      </Reference>
       <Reference Include="Assembly-CSharp">
         <HintPath>..\PluginAssemblies\Assembly-CSharp.dll</HintPath>
       </Reference>
@@ -62,6 +65,9 @@
       <Reference Include="UnityEngine.PhysicsModule">
         <HintPath>..\PluginAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
       </Reference>
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

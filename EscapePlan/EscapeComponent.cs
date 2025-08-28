@@ -1,8 +1,11 @@
-﻿using LabApi.Events.Arguments.PlayerEvents;
+﻿using System;
+using System.Runtime.Remoting.Messaging;
+using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Handlers;
 using LabApi.Features.Wrappers;
 using PlayerRoles;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // using Log = LabApi.Features.Console.Logger;
 
@@ -16,36 +19,28 @@ namespace EscapePlan
         private void OnTriggerEnter(Collider collider)
         {
             if (!Player.TryGet(collider.gameObject, out Player player)) return;
-            RoleTypeId escapeRole;
-            Escape.EscapeScenarioType escapeScenario;
             
-            switch (player.Role)
+            (RoleTypeId escapeRole, Escape.EscapeScenarioType escapeScenario) = player.Role switch
             {
-                case RoleTypeId.Scientist:
-                    if (player.IsDisarmed) {
-                        escapeRole = RoleTypeId.ChaosConscript;
-                        escapeScenario = Escape.EscapeScenarioType.CuffedScientist;
-                    } else {
-                        escapeRole = RoleTypeId.NtfSpecialist;
-                        escapeScenario = Escape.EscapeScenarioType.Scientist;
-                    }
-                    break;
-                case RoleTypeId.ClassD:
-                    if (player.IsDisarmed) {
-                        escapeRole = RoleTypeId.NtfPrivate;
-                        escapeScenario = Escape.EscapeScenarioType.CuffedClassD;
-                    } else {
-                        escapeRole = RoleTypeId.ChaosConscript;
-                        escapeScenario = Escape.EscapeScenarioType.ClassD;
-                    }
-                    break;
-                case var _ when player.IsDisarmed && EscapePlan.config.DetainedMilitantsEscapees.Contains(player.Role):
-                    escapeScenario = Escape.EscapeScenarioType.Custom;
-                    escapeRole = player.Team == Team.ChaosInsurgency ? EscapePlan.config.DetainedChaosEscapeRole : EscapePlan.config.DetainedFoundationEscapeRole;
-                    
-                    break;
-                default: return;
-            }
+                RoleTypeId.Scientist => player.IsDisarmed ?
+                    (RoleTypeId.ChaosConscript, Escape.EscapeScenarioType.CuffedScientist)
+                    :
+                    (RoleTypeId.NtfSpecialist, Escape.EscapeScenarioType.Scientist),
+                
+                RoleTypeId.ClassD => player.IsDisarmed ?
+                    (RoleTypeId.NtfPrivate, Escape.EscapeScenarioType.CuffedClassD)
+                    :
+                    (RoleTypeId.ChaosConscript, Escape.EscapeScenarioType.ClassD),
+                
+                _ when player.IsDisarmed && EscapePlan.config.DetainedMilitantsEscapees.Contains(player.Role) =>
+                    (
+                        player.Team == Team.ChaosInsurgency ? EscapePlan.config.DetainedChaosEscapeRole : EscapePlan.config.DetainedFoundationEscapeRole,
+                        Escape.EscapeScenarioType.Custom
+                    ),
+                
+                _ => (RoleTypeId.None, Escape.EscapeScenarioType.None)
+            };
+            if (escapeRole == RoleTypeId.None) return;
 
             player.SetRole(escapeRole, RoleChangeReason.Escaped);
             PlayerEvents.OnEscaped(new PlayerEscapedEventArgs(player.ReferenceHub, escapeRole, escapeScenario));
