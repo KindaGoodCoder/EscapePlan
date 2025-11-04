@@ -59,8 +59,5 @@ ntf_556_ammo: 120
 # Exclusive items only for NTF Escapees. This can include sidearms and ammunition
 ntf_items:
 - GunCOM18
-```
-
-Note:
-The current code was tested to work for 14.0.3 but since in 14.1, surface has been moved from y=1000 to y=300, there may be some errors. However, the program should be able to automatically account for this.
+```should be able to automatically account for this.
 But since there is currently no avaliable 14.1 server tool, it is currently not possible to test it.

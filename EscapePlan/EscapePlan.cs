@@ -1,7 +1,6 @@
-﻿using System;
-using LabApi.Loader.Features.Plugins;
-using System.Collections.Generic;
+﻿using LabApi.Loader.Features.Plugins;
 using System.Linq;
+using HarmonyLib;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
 using LabApi.Events.Arguments.PlayerEvents;
@@ -11,7 +10,7 @@ using MapGeneration;
 using PlayerRoles;
 using UnityEngine;
 using Version = System.Version;
-// using Log = LabApi.Features.Console.Logger;
+using Log = LabApi.Features.Console.Logger;
 using BreakableDoor = Interactables.Interobjects.BreakableDoor;
 using Object = UnityEngine.Object;
 
@@ -27,20 +26,32 @@ namespace EscapePlan
         public override string Author => "Goodman";
         public override Version Version => new(1, 0, 0, 0);
         public override Version RequiredApiVersion => new(0, 0, 0);
+        private readonly Harmony _harmony = new Harmony("EscapePlan");
 
         public override void Enable()
         {
             config = Config;
             PlayerEvents.Escaped += OnPlayerEscape;
+            PlayerEvents.Escaping += maybe;
             ServerEvents.RoundStarted += OnRoundStarted;
-
-            LabApi.Features.Console.Logger.Debug("EscapePlan Plugin Loaded");
+            _harmony.PatchAll();
+            
+            Log.Debug("EscapePlan Plugin Loaded");
         }
 
         public override void Disable()
         {
             PlayerEvents.Escaped -= OnPlayerEscape;
+            PlayerEvents.Escaping -= maybe;
             ServerEvents.RoundStarted -= OnRoundStarted;
+        }
+
+        private void maybe(PlayerEscapingEventArgs args)
+        {
+            Log.Info("Perhaps");
+            args.EscapeScenario = Escape.EscapeScenarioType.Custom;
+            args.NewRole = RoleTypeId.Scp106;
+            args.IsAllowed = true;
         }
         
         private void OnRoundStarted()
