@@ -41,26 +41,26 @@
     </ItemGroup>
     <ItemGroup>
       <Reference Include="Assembly-CSharp">
-        <HintPath>..\PluginAssemblies\Assembly-CSharp.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\Assembly-CSharp.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp-firstpass">
-        <HintPath>..\PluginAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\Assembly-CSharp-firstpass.dll</HintPath>
       </Reference>
       <Reference Include="CommandSystem.Core">
-        <HintPath>..\PluginAssemblies\CommandSystem.Core.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\CommandSystem.Core.dll</HintPath>
       </Reference>
       <Reference Include="LabApi">
-        <HintPath>..\PluginAssemblies\LabApi.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\LabApi.dll</HintPath>
       </Reference>
       <Reference Include="Mirror">
-        <HintPath>..\PluginAssemblies\Mirror.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\Mirror.dll</HintPath>
       </Reference>
       <Reference Include="System" />
       <Reference Include="UnityEngine.CoreModule">
-        <HintPath>..\PluginAssemblies\UnityEngine.CoreModule.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.PhysicsModule">
-        <HintPath>..\PluginAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
+        <HintPath>$(KI_SCP_DEPENDENCIES)\UnityEngine.PhysicsModule.dll</HintPath>
       </Reference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
