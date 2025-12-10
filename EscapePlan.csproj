@@ -35,14 +35,10 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="EscapePlan\Config.cs" />
-        <Compile Include="EscapePlan\EscapeComponent.cs" />
         <Compile Include="EscapePlan\EscapePlan.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
-      <Reference Include="0Harmony, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-        <HintPath>packages\Lib.Harmony.2.4.1\lib\net48\0Harmony.dll</HintPath>
-      </Reference>
       <Reference Include="Assembly-CSharp">
         <HintPath>$(KI_SCP_DEPENDENCIES)\Assembly-CSharp.dll</HintPath>
       </Reference>

@@ -43,7 +43,7 @@ namespace EscapePlan
             if (escapeRole == RoleTypeId.None) return;
 
             player.SetRole(escapeRole, RoleChangeReason.Escaped);
-            PlayerEvents.OnEscaped(new PlayerEscapedEventArgs(player.ReferenceHub, escapeRole, escapeScenario));
+            
             if (EscapePlan.config.EscapeesSpawnAtEscapeGate) player.Position = spawnPosition + EscapePlan.SurfacePosition + new Vector3(0, 0, Random.Range(0,5));
         }
     }
