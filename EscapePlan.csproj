@@ -36,7 +36,7 @@
     <ItemGroup>
         <Compile Include="EscapePlan\Config.cs" />
         <Compile Include="EscapePlan\EscapePlan.cs" />
-        <Compile Include="EventsHandler.cs" />
+        <Compile Include="EscapePlan\EventsHandler.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
