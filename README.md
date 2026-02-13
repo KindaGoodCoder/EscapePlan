@@ -4,7 +4,7 @@
 Plugin that adds on to the current escape system and introduces some new features such as:
 - Adds a new escape door with a configurable location where you can choose where it spawns; Maybe try putting it at Gate A
 - Allows for the full and easy customisability of the CI Conscript and NTF Specialist loadouts
-  - Escapees that escape as NTF Specialist can also get additional items as configured.
+  - Escapees that escape as NTF Privates get extra items in addition to their default loadouts.
 - Configuration option to allow players to spawn at the gate they escaped from. For example, a Class-D who escaped from Gate B can spawn on the Gate B road as a Chaos Insurgency Conscript.
 - Allows specific militant roles to be detained and defect to the enemy team (Disabled by default)
 
