@@ -10,12 +10,12 @@ Plugin that adds on to the current escape system and introduces some new feature
 
 There's plenty of customisable configuration options to suit whatever your server needs, so feel free to only use the features you like.
 
-This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multiplayer but designed for SL using the new LabAPI framework.
+This is a remake of my old EscapePlan plugin for SCP: Containment Breach Multiplayer but redesigned for SL using the new LabAPI framework.
 
 ### How to Install?
 1. Download the appropiate `.dll` release file
 2. Find the SL Server LabAPI plugins folder at `%APPDATA%\SCP Secret Laboratory\LabAPI\plugins` and move the `.dll` file to the desired port. 
-3. Launch the server once to load the Configs and edit the `.yml` file in `\LabAPI\Configs\(port)` to your heart's content.
+3. Launch the server once to load the Configs and edit the `.yml` file in `\LabAPI\configs\(port)\EscapePlan` to your heart's content.
 
 ## Config file
 
